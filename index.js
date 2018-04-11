@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
-//const cors = require('cors')
 const app = express()
-//app.use(cors())
 app.use(express.static('public'))
 const path = require('path')
 
@@ -13,14 +11,6 @@ app.use(express.static(path.join(__dirname, "client", "build")))
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
 const jsonParser = bodyParser.json()
-
-// cross origin things
-// var corsOptions = {
-//   origin: 'http://localhost:3000',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
-
-// app.options('*', cors());
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
