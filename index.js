@@ -11,7 +11,7 @@ require('dotenv').config()
 app.use(express.static(path.join(__dirname, "client", "build")))
 
 const bodyParser = require('body-parser')
-//app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }))
 const jsonParser = bodyParser.json()
 
 // cross origin things
