@@ -11,6 +11,7 @@ require('dotenv').config()
 app.use(express.static(path.join(__dirname, "client", "build")))
 
 const bodyParser = require('body-parser')
+//app.use(bodyParser.urlencoded({ extended: true }))
 const jsonParser = bodyParser.json()
 
 // cross origin things
@@ -26,14 +27,15 @@ app.get('/', function(req, res) {
 });
 
 const mongoose = require('mongoose')
+//mongoose.connect('mongodb://localhost/user_db')
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/user')
 
 // just going to create a simple mongo schema that we can use
-const Schema = new mongoose.Schema;
+const Schema = mongoose.Schema;
 const userSchema = new Schema({
   firstName: String,
   lastName: String,
-  creditCardNumber: Number
+  creditCardNumber: String
 })
 
 const User = mongoose.model('user', userSchema)
@@ -52,16 +54,17 @@ app.get('/api/users', (req, res) => {
 // post route to insert a new user
 app.post('/api/user', (req, res) => {
   const {firstName, lastName, creditCardNumber} = req.body
-  const newuser = {
+  const newUser = {
     firstName,
     lastName,
     creditCardNumber
   }
+
   User(newUser).save((err, savedUser) => {
     if (err) {
       res.json({ error: err })
     } else {
-      res.json({ msg: 'New user successfully added!', data: savedUser })
+      res.json({ msg: 'user successfully added', data: savedUser })
     }
   })
 })
