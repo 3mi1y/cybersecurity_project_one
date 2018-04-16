@@ -7,22 +7,14 @@ const Header = styled.header`
 background-color: #222;
 padding: 40px;
 color: white;
-text-align: center;
-`
-
-const Intro = styled.p`
-font-size: large;
-text-align: center;  
-`
+text-align: center;`;
 
 const TextContainer = styled.div`
 text-align: center;
-justify-content: center;
-`
+justify-content: center; 
+padding: 0 30vw 10px 30vw;`;
 
-const buttonStyles = {
-    marginTop: '24px'
-}
+const buttonStyles = {marginTop: '24px'};
 
 class App extends Component {
     constructor() {
@@ -30,7 +22,8 @@ class App extends Component {
         this.state = {
             firstName: '',
             lastName: '',
-            creditCardNumber: ''
+            creditCardNumber: '',
+            movie: ''
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -40,16 +33,26 @@ class App extends Component {
         console.log(this.state)
     }
 
+    getStudioGhibliFilm() {
+        fetch('https://ghibliapi.herokuapp.com/films')
+            .then(data => data.json().then(
+                films => {
+                    let rand = Math.floor(Math.random() * Math.floor(20));
+                    this.setState({movie: films[rand]}
+                    )
+                }
+            ))
+    }
+
+
     render() {
         return (
             <div>
                 <Header>
                     <h1>CyberSecurity Project 1</h1>
                 </Header>
-                <Intro>
-                    Enter some data please!
-                </Intro>
                 <TextContainer>
+                    <h1>Enter some data please!</h1>
                     <TextField
                         label="First Name"
                         name="firstName"
@@ -68,9 +71,15 @@ class App extends Component {
                         value={this.state.creditCardNumber}
                         onChange={this.handleChange}
                     /><br/><br/>
-                    <Button variant="raised" color="primary" style={buttonStyles}>
-                        Submit
-                    </Button>
+                    <Button variant="raised" color="primary" style={buttonStyles}>Submit</Button>
+                </TextContainer>
+                <TextContainer>
+                <h1>Another External Service</h1>
+                    <Button variant="raised" color="primary" style={buttonStyles} onClick={() => this.getStudioGhibliFilm()}>Get a Miyazaki film</Button>
+                        <h3>{this.state.movie ? this.state.movie.title : 'Click the button above to fetch some data'}</h3>
+                        <p>{this.state.movie ? `Description: ${this.state.movie.description}` : ''}</p>
+                        <p>{this.state.movie ? `Director: ${this.state.movie.director}` : ''}</p>
+                        <p>{this.state.movie ? `Rotten Tomatoes score: ${this.state.movie.rt_score}` : ''}</p>
                 </TextContainer>
             </div>
         );
