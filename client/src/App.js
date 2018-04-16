@@ -47,7 +47,7 @@ class App extends Component {
                     <h1>CyberSecurity Project 1</h1>
                 </Header>
                 <Intro>
-                    Enter some data why don't ya? 🤗
+                    Enter some data please
                 </Intro>
                 <TextContainer>
                     <TextField
