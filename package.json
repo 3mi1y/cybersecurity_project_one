@@ -18,7 +18,8 @@
     "dotenv": "^5.0.0",
     "express": "^4.16.2",
     "moment": "^2.20.1",
-    "mongoose": "^5.0.1"
+    "mongoose": "^5.0.1",
+    "newrelic": "^4.0.0"
   },
   "devDependencies": {
     "jasmine-node": "^1.14.5"
