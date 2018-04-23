@@ -55,7 +55,7 @@ class App extends Component {
 
         axios({
             method: 'post',
-            url: 'http://localhost:3030/api/user',
+            url: 'https://www.missiongizmo.com/api/user',
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             data: qs.stringify({
                 firstName: this.state.firstName,
