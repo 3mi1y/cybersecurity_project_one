@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import axios from 'axios';
 import qs from 'qs';
+import {ToastContainer, ToastStore} from 'react-toasts';
 
 const Header = styled.header`
 background-color: #222;
@@ -47,30 +48,52 @@ class App extends Component {
     }
 
     submitPerson() {
-        let myperson = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            creditCardNumber: this.state.creditCardNumber
+        if (!(this.state.firstName && this.state.lastName && this.state.creditCardNumber)) {
+            ToastStore.error('Please fill out all field before submitting.');
         }
-
-        axios({
-            method: 'post',
-            url: 'https://www.missiongizmo.com/api/user',
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: qs.stringify({
+        else {
+            let myperson = {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 creditCardNumber: this.state.creditCardNumber
+            }
+    
+            axios({
+                method: 'post',
+                url: 'https://www.missiongizmo.com/api/user',
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
+                data: qs.stringify({
+                    firstName: this.state.firstName,
+                    lastName: this.state.lastName,
+                    creditCardNumber: this.state.creditCardNumber
+                })
+            }).then(
+            
+            responseData => {
+                console.log(responseData)
+                ToastStore.success('Successfully added user.');     
+                this.setState({
+                    firstName: '',
+                    lastName: '',
+                    creditCardNumber: '',
+                })                           
+            }, 
+            err => {
+                ToastStore.error('Oops something went wrong and the user was not added.');                                
+                this.setState({
+                    firstName: '',
+                    lastName: '',
+                    creditCardNumber: '',
+                })            
             })
-        }).then((responseData) => {
-            console.log(responseData)
-        })
+        }
     }
 
 
     render() {
         return (
             <div>
+                <ToastContainer store={ToastStore}/>                                                                                
                 <Header>
                     <h1>CyberSecurity Project 1</h1>
                 </Header>
