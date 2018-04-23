@@ -2,12 +2,21 @@ require('newrelic');
 const express = require('express')
 const router = express.Router()
 const app = express()
+const cors = require('cors')
+app.use(cors())
 app.use(express.static('public'))
 const path = require('path')
 
 require('dotenv').config()
 
 app.use(express.static(path.join(__dirname, "client", "build")))
+
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.options('*', cors());
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -44,6 +53,7 @@ app.get('/api/users', (req, res) => {
 
 // post route to insert a new user
 app.post('/api/user', (req, res) => {
+  console.log(req.body)
   const {firstName, lastName, creditCardNumber} = req.body
   const newUser = {
     firstName,

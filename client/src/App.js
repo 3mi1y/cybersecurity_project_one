@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import axios from 'axios';
+import qs from 'qs';
 
 const Header = styled.header`
 background-color: #222;
@@ -30,7 +32,7 @@ class App extends Component {
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
-        console.log(this.state)
+        // console.log(this.state)
     }
 
     getStudioGhibliFilm() {
@@ -42,6 +44,27 @@ class App extends Component {
                     )
                 }
             ))
+    }
+
+    submitPerson() {
+        let myperson = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            creditCardNumber: this.state.creditCardNumber
+        }
+
+        axios({
+            method: 'post',
+            url: 'http://localhost:3030/api/user',
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            data: qs.stringify({
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                creditCardNumber: this.state.creditCardNumber
+            })
+        }).then((responseData) => {
+            console.log(responseData)
+        })
     }
 
 
@@ -71,7 +94,7 @@ class App extends Component {
                         value={this.state.creditCardNumber}
                         onChange={this.handleChange}
                     /><br/><br/>
-                    <Button variant="raised" color="primary" style={buttonStyles}>Submit</Button>
+                    <Button variant="raised" color="primary" style={buttonStyles} onClick={() => this.submitPerson()}>Submit</Button>
                 </TextContainer>
                 <TextContainer>
                 <h1>Another External Service</h1>
