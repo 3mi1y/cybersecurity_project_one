@@ -55,19 +55,23 @@ app.get('/api/users', (req, res) => {
 app.post('/api/user', (req, res) => {
   console.log(req.body)
   const {firstName, lastName, creditCardNumber} = req.body
-  const newUser = {
-    firstName,
-    lastName,
-    creditCardNumber
-  }
-
-  User(newUser).save((err, savedUser) => {
-    if (err) {
-      res.json({ error: err })
-    } else {
-      res.json({ msg: 'user successfully added', data: savedUser })
+  if(firstName == ""|| lastName == "" || creditCardNumber == "") {
+    res.json({ err: 'Bad Request (400)' })
+  } else {
+    const newUser = {
+      firstName,
+      lastName,
+      creditCardNumber
     }
-  })
+  
+    User(newUser).save((err, savedUser) => {
+      if (err) {
+        res.json({ error: err })
+      } else {
+        res.json({ msg: 'user successfully added', data: savedUser })
+      }
+    })
+  }
 })
 
 const port = process.env.PORT || 3030;
