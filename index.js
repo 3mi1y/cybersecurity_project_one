@@ -53,7 +53,6 @@ app.get('/api/users', (req, res) => {
 
 // post route to insert a new user
 app.post('/api/user', (req, res) => {
-  console.log(req.body)
   const {firstName, lastName, creditCardNumber} = req.body
   if(firstName == ""|| lastName == "" || creditCardNumber == "") {
     res.json({ err: 'Bad Request (400)' })
